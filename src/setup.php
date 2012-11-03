@@ -15,13 +15,19 @@ use Symfony\Bridge\Twig\Form\TwigRenderer;
 // Overwrite this with your own secret
 $csrfSecret = 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr';
 
-// Set up requirements - hopefully we can facilitate this more in 2.2
+// Set up CSRF provider
 $csrfProvider = new DefaultCsrfProvider($csrfSecret);
+
+// Set up Validator component
 $validator = Validation::createValidator();
+
+// Set up Translation component
 $translator = new Translator('en');
 $translator->addLoader('xlf', new XliffFileLoader());
 $translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/form/Symfony/Component/Form/Resources/translations/validators.en.xlf'), 'en', 'validators');
 $translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators.en.xlf'), 'en', 'validators');
+
+// Set up Twig
 $loader = new Twig_Loader_Filesystem(array(
     realpath(__DIR__ . '/../views'),
     realpath(__DIR__ . '/../vendor/symfony/twig-bridge/Symfony/Bridge/Twig/Resources/views/Form'),
@@ -34,7 +40,7 @@ $twig->addExtension(new TranslationExtension($translator));
 $twig->addExtension(new FormExtension(new TwigRenderer($twigFormEngine, $csrfProvider)));
 $twigFormEngine->setEnvironment($twig);
 
-// Set up the form factory with all desired extensions
+// Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
     ->addExtension(new CsrfExtension($csrfProvider))
     ->addExtension(new ValidatorExtension($validator))
