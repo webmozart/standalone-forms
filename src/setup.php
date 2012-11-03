@@ -45,6 +45,9 @@ define('VENDOR_FRAMEWORK_BUNDLE_DIR', VENDOR_DIR . '/symfony/framework-bundle/Sy
 define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 
 // Set up the CSRF provider
+$csrfProvider = new DefaultCsrfProvider(CSRF_SECRET);
+
+// Set up the Validator component
 $validator = Validation::createValidator();
 
 // Set up the Translation component
@@ -59,7 +62,7 @@ $engine->addHelpers(array(new TranslatorHelper($translator)));
 
 // Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
-    ->addExtension(new CsrfExtension(new DefaultCsrfProvider(CSRF_SECRET)))
+    ->addExtension(new CsrfExtension($csrfProvider))
     ->addExtension(new TemplatingExtension($engine, null, array(
         // Will hopefully not be necessary anymore in 2.2
             VENDOR_FRAMEWORK_BUNDLE_DIR . '/Resources/views/Form',
