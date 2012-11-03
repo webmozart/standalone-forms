@@ -13,10 +13,17 @@ use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 
 // Overwrite this with your own secret
-$csrfSecret = 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr';
+define('CSRF_SECRET', 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr');
+
+define('VENDOR_DIR', realpath(__DIR__ . '/../vendor'));
+define('VENDOR_FORM_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Form');
+define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Validator');
+define('VENDOR_TWIG_BRIDGE_DIR', VENDOR_DIR . '/symfony/twig-bridge/Symfony/Bridge/Twig');
+define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
+define('CACHE_DIR', realpath(__DIR__ . '/../cache'));
 
 // Set up CSRF provider
-$csrfProvider = new DefaultCsrfProvider($csrfSecret);
+$csrfProvider = new DefaultCsrfProvider(CSRF_SECRET);
 
 // Set up Validator component
 $validator = Validation::createValidator();
@@ -24,17 +31,17 @@ $validator = Validation::createValidator();
 // Set up Translation component
 $translator = new Translator('en');
 $translator->addLoader('xlf', new XliffFileLoader());
-$translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/form/Symfony/Component/Form/Resources/translations/validators.en.xlf'), 'en', 'validators');
-$translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators.en.xlf'), 'en', 'validators');
+$translator->addResource('xlf', VENDOR_FORM_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
+$translator->addResource('xlf', VENDOR_VALIDATOR_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
 
 // Set up Twig
 $loader = new Twig_Loader_Filesystem(array(
-    realpath(__DIR__ . '/../views'),
-    realpath(__DIR__ . '/../vendor/symfony/twig-bridge/Symfony/Bridge/Twig/Resources/views/Form'),
+    VIEWS_DIR,
+    VENDOR_TWIG_BRIDGE_DIR . '/Resources/views/Form',
 ));
 $twigFormEngine = new TwigRendererEngine(array('form_div_layout.html.twig'));
 $twig = new Twig_Environment($loader, array(
-    'cache' => realpath(__DIR__ . '/../cache'),
+    'cache' => CACHE_DIR,
 ));
 $twig->addExtension(new TranslationExtension($translator));
 $twig->addExtension(new FormExtension(new TwigRenderer($twigFormEngine, $csrfProvider)));
