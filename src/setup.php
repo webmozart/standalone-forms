@@ -22,13 +22,13 @@ define('VENDOR_TWIG_BRIDGE_DIR', VENDOR_DIR . '/symfony/twig-bridge/Symfony/Brid
 define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 define('CACHE_DIR', realpath(__DIR__ . '/../cache'));
 
-// Set up CSRF provider
+// Set up the CSRF provider
 $csrfProvider = new DefaultCsrfProvider(CSRF_SECRET);
 
-// Set up Validator component
+// Set up the Validator component
 $validator = Validation::createValidator();
 
-// Set up Translation component
+// Set up the Translation component
 $translator = new Translator('en');
 $translator->addLoader('xlf', new XliffFileLoader());
 $translator->addResource('xlf', VENDOR_FORM_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
