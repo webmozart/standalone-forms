@@ -14,6 +14,7 @@ use Symfony\Bridge\Twig\Form\TwigRenderer;
 
 // Overwrite this with your own secret
 define('CSRF_SECRET', 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr');
+define('DEFAULT_FORM_THEME', 'form_div_layout.html.twig');
 
 define('VENDOR_DIR', realpath(__DIR__ . '/../vendor'));
 define('VENDOR_FORM_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Form');
@@ -42,7 +43,7 @@ $loader = new Twig_Loader_Filesystem(array(
 $twig = new Twig_Environment($loader, array(
     'cache' => CACHE_DIR,
 ));
-$formEngine = new TwigRendererEngine(array('form_div_layout.html.twig'));
+$formEngine = new TwigRendererEngine(array(DEFAULT_FORM_THEME));
 $formEngine->setEnvironment($twig);
 $twig->addExtension(new TranslationExtension($translator));
 $twig->addExtension(new FormExtension(new TwigRenderer($formEngine, $csrfProvider)));
