@@ -39,13 +39,13 @@ $loader = new Twig_Loader_Filesystem(array(
     VIEWS_DIR,
     VENDOR_TWIG_BRIDGE_DIR . '/Resources/views/Form',
 ));
-$twigFormEngine = new TwigRendererEngine(array('form_div_layout.html.twig'));
 $twig = new Twig_Environment($loader, array(
     'cache' => CACHE_DIR,
 ));
+$formEngine = new TwigRendererEngine(array('form_div_layout.html.twig'));
+$formEngine->setEnvironment($twig);
 $twig->addExtension(new TranslationExtension($translator));
-$twig->addExtension(new FormExtension(new TwigRenderer($twigFormEngine, $csrfProvider)));
-$twigFormEngine->setEnvironment($twig);
+$twig->addExtension(new FormExtension(new TwigRenderer($formEngine, $csrfProvider)));
 
 // Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
