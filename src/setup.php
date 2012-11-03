@@ -38,16 +38,20 @@ class SimpleTemplateNameParser implements TemplateNameParserInterface
 // Overwrite this with your own secret
 $csrfSecret = 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr';
 
-// Set up requirements - hopefully we can facilitate this more in 2.2
+// Set up the CSRF provider
 $validator = Validation::createValidator();
+
+// Set up the Translation component
 $translator = new Translator('en');
 $translator->addLoader('xlf', new XliffFileLoader());
 $translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/form/Symfony/Component/Form/Resources/translations/validators.en.xlf'), 'en', 'validators');
 $translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators.en.xlf'), 'en', 'validators');
+
+// Set up the Templating component
 $engine = new PhpEngine(new SimpleTemplateNameParser(realpath(__DIR__ . '/../views')), new FilesystemLoader(array()));
 $engine->addHelpers(array(new TranslatorHelper($translator)));
 
-// Set up the form factory with all desired extensions
+// Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
     ->addExtension(new CsrfExtension(new DefaultCsrfProvider($csrfSecret)))
     ->addExtension(new TemplatingExtension($engine, null, array(
