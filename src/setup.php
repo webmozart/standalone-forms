@@ -36,7 +36,13 @@ class SimpleTemplateNameParser implements TemplateNameParserInterface
 }
 
 // Overwrite this with your own secret
-$csrfSecret = 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr';
+define('CSRF_SECRET', 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr');
+
+define('VENDOR_DIR', realpath(__DIR__ . '/../vendor'));
+define('VENDOR_FORM_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Form');
+define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Validator');
+define('VENDOR_FRAMEWORK_BUNDLE_DIR', VENDOR_DIR . '/symfony/framework-bundle/Symfony/Bundle/FrameworkBundle');
+define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 
 // Set up the CSRF provider
 $validator = Validation::createValidator();
@@ -44,19 +50,19 @@ $validator = Validation::createValidator();
 // Set up the Translation component
 $translator = new Translator('en');
 $translator->addLoader('xlf', new XliffFileLoader());
-$translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/form/Symfony/Component/Form/Resources/translations/validators.en.xlf'), 'en', 'validators');
-$translator->addResource('xlf', realpath(__DIR__ . '/../vendor/symfony/validator/Symfony/Component/Validator/Resources/translations/validators.en.xlf'), 'en', 'validators');
+$translator->addResource('xlf', VENDOR_FORM_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
+$translator->addResource('xlf', VENDOR_VALIDATOR_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
 
 // Set up the Templating component
-$engine = new PhpEngine(new SimpleTemplateNameParser(realpath(__DIR__ . '/../views')), new FilesystemLoader(array()));
+$engine = new PhpEngine(new SimpleTemplateNameParser(VIEWS_DIR), new FilesystemLoader(array()));
 $engine->addHelpers(array(new TranslatorHelper($translator)));
 
 // Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
-    ->addExtension(new CsrfExtension(new DefaultCsrfProvider($csrfSecret)))
+    ->addExtension(new CsrfExtension(new DefaultCsrfProvider(CSRF_SECRET)))
     ->addExtension(new TemplatingExtension($engine, null, array(
         // Will hopefully not be necessary anymore in 2.2
-        realpath(__DIR__ . '/../vendor/symfony/framework-bundle/Symfony/Bundle/FrameworkBundle/Resources/views/Form'),
+            VENDOR_FRAMEWORK_BUNDLE_DIR . '/Resources/views/Form',
     )))
     ->addExtension(new ValidatorExtension($validator))
     ->getFormFactory();
