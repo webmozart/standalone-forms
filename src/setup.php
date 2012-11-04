@@ -40,7 +40,7 @@ define('CSRF_SECRET', 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr');
 
 define('VENDOR_DIR', realpath(__DIR__ . '/../vendor'));
 define('VENDOR_FORM_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Form');
-define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Validator');
+define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/validator/Symfony/Component/Validator');
 define('VENDOR_FRAMEWORK_BUNDLE_DIR', VENDOR_DIR . '/symfony/framework-bundle/Symfony/Bundle/FrameworkBundle');
 define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 
