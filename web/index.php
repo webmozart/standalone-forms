@@ -30,7 +30,7 @@ $form = $formFactory->createBuilder()
     ->getForm();
 
 if (isset($_POST[$form->getName()])) {
-    $form->bind($_POST[$form->getName()]);
+    $form->submit($_POST[$form->getName()]);
 
     if ($form->isValid()) {
         var_dump('VALID', $form->getData());
