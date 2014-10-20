@@ -8,7 +8,9 @@ require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../src/setup.php';
 
 // Create our first form!
-$form = $formFactory->createBuilder()
+$form = $formFactory->createNamedBuilder('my_form_name_here','form')
+    ->setAction('#')
+    ->setMethod('POST')
     ->add('firstName', 'text', array(
         'constraints' => array(
             new NotBlank(),
@@ -29,7 +31,7 @@ $form = $formFactory->createBuilder()
     ))
     ->getForm();
 
-if (isset($_POST[$form->getName()])) {
+if ($form->isSubmitted()) {
     $form->bind($_POST[$form->getName()]);
 
     if ($form->isValid()) {
