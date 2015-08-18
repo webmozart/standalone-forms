@@ -17,9 +17,9 @@ define('CSRF_SECRET', 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr');
 define('DEFAULT_FORM_THEME', 'form_div_layout.html.twig');
 
 define('VENDOR_DIR', realpath(__DIR__ . '/../vendor'));
-define('VENDOR_FORM_DIR', VENDOR_DIR . '/symfony/form/Symfony/Component/Form');
-define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/validator/Symfony/Component/Validator');
-define('VENDOR_TWIG_BRIDGE_DIR', VENDOR_DIR . '/symfony/twig-bridge/Symfony/Bridge/Twig');
+define('VENDOR_FORM_DIR', VENDOR_DIR . '/symfony/form');
+define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/validator');
+define('VENDOR_TWIG_BRIDGE_DIR', VENDOR_DIR . '/symfony/twig-bridge');
 define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 
 // Set up the CSRF provider
@@ -34,7 +34,6 @@ $translator->addLoader('xlf', new XliffFileLoader());
 $translator->addResource('xlf', VENDOR_FORM_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
 $translator->addResource('xlf', VENDOR_VALIDATOR_DIR . '/Resources/translations/validators.en.xlf', 'en', 'validators');
 
-// Set up Twig
 $twig = new Twig_Environment(new Twig_Loader_Filesystem(array(
     VIEWS_DIR,
     VENDOR_TWIG_BRIDGE_DIR . '/Resources/views/Form',
@@ -42,7 +41,9 @@ $twig = new Twig_Environment(new Twig_Loader_Filesystem(array(
 $formEngine = new TwigRendererEngine(array(DEFAULT_FORM_THEME));
 $formEngine->setEnvironment($twig);
 $twig->addExtension(new TranslationExtension($translator));
-$twig->addExtension(new FormExtension(new TwigRenderer($formEngine, $csrfProvider)));
+$twig->addExtension(
+    new FormExtension(new TwigRenderer($formEngine, $csrfProvider))
+);
 
 // Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
