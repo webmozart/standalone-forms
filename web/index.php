@@ -1,6 +1,6 @@
 <?php
 
-use Symfony\Component\Validator\Constraints\MinLength;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -12,13 +12,13 @@ $form = $formFactory->createBuilder()
     ->add('firstName', 'text', array(
         'constraints' => array(
             new NotBlank(),
-            new MinLength(4),
+            new Length(array('min' => 4)),
         ),
     ))
     ->add('lastName', 'text', array(
         'constraints' => array(
             new NotBlank(),
-            new MinLength(4),
+            new Length(array('min' => 4)),
         ),
     ))
     ->add('gender', 'choice', array(
@@ -30,7 +30,7 @@ $form = $formFactory->createBuilder()
     ->getForm();
 
 if (isset($_POST[$form->getName()])) {
-    $form->bind($_POST[$form->getName()]);
+    $form->submit($_POST[$form->getName()]);
 
     if ($form->isValid()) {
         var_dump('VALID', $form->getData());
