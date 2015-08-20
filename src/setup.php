@@ -5,15 +5,13 @@ use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Form\Forms;
 use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Form\TwigRenderer;
 
-// Overwrite this with your own secret
-define('CSRF_SECRET', 'c2ioeEU1n48QF2WsHGWd2HmiuUUT6dxr');
 define('DEFAULT_FORM_THEME', 'form_div_layout.html.twig');
 
 define('VENDOR_DIR', realpath(__DIR__ . '/../vendor'));
@@ -22,8 +20,8 @@ define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/validator');
 define('VENDOR_TWIG_BRIDGE_DIR', VENDOR_DIR . '/symfony/twig-bridge');
 define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 
-// Set up the CSRF provider
-$csrfProvider = new DefaultCsrfProvider(CSRF_SECRET);
+// Set up the CSRF token
+$csrfToken = new CsrfTokenManager();
 
 // Set up the Validator component
 $validator = Validation::createValidator();
@@ -42,11 +40,11 @@ $formEngine = new TwigRendererEngine(array(DEFAULT_FORM_THEME));
 $formEngine->setEnvironment($twig);
 $twig->addExtension(new TranslationExtension($translator));
 $twig->addExtension(
-    new FormExtension(new TwigRenderer($formEngine, $csrfProvider))
+    new FormExtension(new TwigRenderer($formEngine, $csrfToken))
 );
 
 // Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
-    ->addExtension(new CsrfExtension($csrfProvider))
+    ->addExtension(new CsrfExtension($csrfToken))
     ->addExtension(new ValidatorExtension($validator))
     ->getFormFactory();
