@@ -20,8 +20,8 @@ define('VENDOR_VALIDATOR_DIR', VENDOR_DIR . '/symfony/validator');
 define('VENDOR_TWIG_BRIDGE_DIR', VENDOR_DIR . '/symfony/twig-bridge');
 define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 
-// Set up the CSRF token
-$csrfToken = new CsrfTokenManager();
+// Set up the CSRF Token Manager
+$csrfTokenManager = new CsrfTokenManager();
 
 // Set up the Validator component
 $validator = Validation::createValidator();
@@ -40,11 +40,11 @@ $formEngine = new TwigRendererEngine(array(DEFAULT_FORM_THEME));
 $formEngine->setEnvironment($twig);
 $twig->addExtension(new TranslationExtension($translator));
 $twig->addExtension(
-    new FormExtension(new TwigRenderer($formEngine, $csrfToken))
+    new FormExtension(new TwigRenderer($formEngine, $csrfTokenManager))
 );
 
 // Set up the Form component
 $formFactory = Forms::createFormFactoryBuilder()
-    ->addExtension(new CsrfExtension($csrfToken))
+    ->addExtension(new CsrfExtension($csrfTokenManager))
     ->addExtension(new ValidatorExtension($validator))
     ->getFormFactory();
