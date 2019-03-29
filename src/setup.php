@@ -3,7 +3,6 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Form\Forms;
@@ -33,7 +32,6 @@ define('VIEWS_DIR', realpath(__DIR__ . '/../views'));
 $csrfGenerator = new UriSafeTokenGenerator();
 $csrfStorage = new NativeSessionTokenStorage();
 $csrfManager = new CsrfTokenManager($csrfGenerator, $csrfStorage);
-
 $csrfTokenManager = new CsrfTokenManager();
 
 // Set up the Validator component
