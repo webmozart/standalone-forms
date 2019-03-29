@@ -1,10 +1,10 @@
 {
     "require": {
-        "symfony/form": "2.7.*",
-        "symfony/validator": "2.7.*",
-        "symfony/config": "2.7.*",
-        "symfony/translation": "2.7.*",
-        "symfony/twig-bridge": "2.7.*",
-        "symfony/security-csrf": "2.7.*"
+        "symfony/form": "^4.2",
+        "symfony/validator": "4.2.*",
+        "symfony/config": "4.2.*",
+        "symfony/translation": "4.2.*",
+        "symfony/twig-bridge": "^4.2",
+        "symfony/security-csrf": "^4.2"
     }
 }
