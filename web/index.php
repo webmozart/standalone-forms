@@ -36,8 +36,6 @@ $form = $formFactory->createBuilder()
     ])
     ->getForm();
 
-var_dump($_POST);
-
 if (isset($_POST[$form->getName()])) {
     $form->submit($_POST[$form->getName()]);
 
